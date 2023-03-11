@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> live weather </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+<div class="card">
+    <div class="search">
+        <input id="input" type="text" placeholder=" enter the city name " spellcheck="false">
+        <button id="btn"><img src="./images/search.png" > </button>
+           
+     </div>
+     <div class="weather">
+        <img src="./images/rain.png" class="weather-icon">
+         <h1 class="temp">22 &#8451; </h1>
+         <h2 class="city">New York </h2> 
+
+         <div class="details">
+             <!-- ------------------------------------- -->
+            <div class="col">
+                <img src="./images/humidity.png" alt="">
+                <div> 
+                    <p class="humidity">50%</p>
+                    <p>Humidity </p>
+                </div>
+            </div> 
+            <!-- ----------------------------------------- -->
+            <div class="col">
+                <img src="./images/wind.png" alt="">
+                <div> 
+                    <p class="wind"> 15  km/Hr</p>
+                    <p> Wind speed </p>
+                </div>
+            </div> 
+            <!-- --------------------------------------- -->
+        
+        </div>
+    </div>
+</div>
+
+<script> 
+    var sel = document.querySelector("#btn")
+    var city= document.querySelector("#input")
+    var weatherIcon =document.querySelector('.weather-icon')
+
+    // console.log(city.value);
+  
+
+ 
+   const apikey = "e8f228c7c20897a95a33a7a1fcee0886"
+   const apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
+
+//    console.log(apiUrl+ searchcity.value+'&appid=' +apikey+'&units=metric' );
+  
+//    console.log('https://api.openweathermap.org/data/2.5/weather?q=dehradun&appid=e8f228c7c20897a95a33a7a1fcee0886&units=metric');
+
+
+   async function checkweather (city)
+   {
+    const response= await fetch (apiUrl+ city+'&appid=' +apikey+'&units=metric');
+    var data = await response.json();
+
+    // console.log(apiUrl + apikey + '&units=metric');
+
+    
+    document.querySelector(".city").innerHTML = data.name;
+    document.querySelector(".temp").innerHTML = data.main.temp +" &degC"; 
+    document.querySelector(".humidity").innerHTML = data.main.humidity+"%";
+    document.querySelector(".wind").innerHTML = data.wind.speed +"km/hr" ;
+    
+
+    console.log(data.weather[0].main);
+
+    if(data.weather[0].main =='Clouds')
+    {  
+        console.log( ' cloudy weather');
+        weatherIcon.src ="./images/clouds.png"
+    } 
+    else if(data.weather[0].main =='Rain')
+    {
+        console.log( ' rainy weather');
+
+        weatherIcon.src ="./images/rain.png"
+
+    }
+    else if(data.weather[0].main =='Drizzle')
+    {   
+        console.log( ' drizzle weather');
+
+        weatherIcon.src ="./images/drizzle.png"
+
+    }
+    else if(data.weather[0].main =='Mist')
+    {
+        console.log( ' mist weather');
+// 
+        // weatherIcon.src ="./images/mist.png"
+
+    }
+    else if (data.weather[0].main =='Haze')
+    {
+        weatherIcon.src ="./images/wind.png"
+    }
+    else if (data.weather[0].main =='Clear')
+    {
+        weatherIcon.src ="./images/clear.png";
+    }
+    
+
+}
+sel.addEventListener('click',()=>{
+        console.log('clicked button');
+        checkweather(city.value)
+
+    })
+
+</script>
+
+</body>
+</html>
